@@ -2,6 +2,7 @@
 *.iml
 *.jar
 .classpath
+.idea
 .project
 .settings
 build.jardesc
