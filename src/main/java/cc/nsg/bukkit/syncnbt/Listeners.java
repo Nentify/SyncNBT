@@ -34,13 +34,8 @@ public class Listeners implements Listener {
     Player player = event.getPlayer();
     plugin.db.lockPlayer(player.getName());
 
-    if (plugin.db.getSetting(player.getName()) == 2) {
-      plugin.getLogger().info("Player " + player.getName() + " logout, saving data with mode 2");
-      new PlayerTicker(plugin, player.getName()).stopPlayerTicker(true);
-    } else {
-      plugin.getLogger().info("Player " + player.getName() + " logout, saving data with mode 1");
-      plugin.nbt.saveInventory(player);
-    }
+    plugin.getLogger().info("Player " + player.getName() + " logout");
+    new PlayerTicker(plugin, player.getName()).stopPlayerTicker(true);
     
     plugin.db.unlockPlayer(player.getName());
   }
@@ -74,17 +69,8 @@ public class Listeners implements Listener {
             
             @Override
             public void run() {
-
-              if (plugin.db.getSetting(player.getName()) == 2) {
-                plugin.getLogger().info("Player " + player.getName() + " login, saving data with mode 2");
-                new PlayerTicker(plugin, player.getName()).startPlayerTicker();
-              } else {
-                plugin.getLogger().info("Player " + player.getName() + " login, saving data with mode 1");
-                plugin.nbt.restoreInventory(player);
-                player.sendMessage("Your items are restored! New storage mode set.");
-                plugin.db.setSetting(player.getName(), 2);
-              }
-              
+              plugin.getLogger().info("Player " + player.getName() + " login");
+              new PlayerTicker(plugin, player.getName()).startPlayerTicker();
             }
           });
           

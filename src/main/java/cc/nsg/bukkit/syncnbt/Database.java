@@ -29,11 +29,11 @@ public class Database {
     log = plugin.getLogger();
 
     // TODO: Check these values for sane data
-    hostname = plugin.getConfig().getString("Database.MySQL.HostName");
-    port = plugin.getConfig().getInt("Database.MySQL.Port");
-    database = plugin.getConfig().getString("Database.MySQL.DatabaseName");
-    user = plugin.getConfig().getString("Database.MySQL.Username");
-    password = plugin.getConfig().getString("Database.MySQL.Password");
+    hostname = plugin.getConfig().getString("database.mysql.hostname");
+    port = plugin.getConfig().getInt("database.mysql.port");
+    database = plugin.getConfig().getString("database.mysql.database");
+    user = plugin.getConfig().getString("database.mysql.usernmae");
+    password = plugin.getConfig().getString("database.mysql.password");
 
     if (!openConnection()) {
       return;
@@ -113,22 +113,6 @@ public class Database {
     }
 
     return null;
-  }
-
-
-  public void setSetting(String player, int state) {
-    openConnection();
-
-    String sql = "INSERT INTO syncnbt_settings (player_name, state) values(?, ?) on duplicate key update state = ?";
-    try {
-      PreparedStatement statement = connection.prepareStatement(sql);
-      statement.setString(1, player);
-      statement.setInt(2, state);
-      statement.setInt(3, state);
-      statement.executeUpdate();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
   }
 
   public int getSetting(String player) {
@@ -215,29 +199,13 @@ public class Database {
   
   private boolean createTables() {
     try {
-      
-      /* used by PowerNBT mode 1 */
-      
-      String sql = "CREATE TABLE IF NOT EXISTS syncnbt_nbtdata (" +
-      		"id INT(10) PRIMARY KEY AUTO_INCREMENT, inventory_pos INT(10), parent_id INT(10), name VARCHAR(255), " +
-      		"type VARCHAR(16), data BLOB, player_name TEXT" +
-      		");";
-      PreparedStatement statement = connection.prepareStatement(sql);
-      statement.execute();
-
-      sql = "CREATE TABLE IF NOT EXISTS syncnbt_items (" +
-          "id BIGINT PRIMARY KEY AUTO_INCREMENT, amount SMALLINT, durability INT, type SMALLINT, data SMALLINT, " +
-          "player_name VARCHAR(255), slot SMALLINT" +
-          ");";
-      statement = connection.prepareStatement(sql);
-      statement.executeUpdate();
 
       /* used by ProtocolLib mode 2 */
       
-      sql = "CREATE TABLE IF NOT EXISTS syncnbt_json (" +
+      String sql = "CREATE TABLE IF NOT EXISTS syncnbt_json (" +
           "player_name VARCHAR(255) PRIMARY KEY, json_data BLOB" +
           ");";
-      statement = connection.prepareStatement(sql);
+      PreparedStatement statement = connection.prepareStatement(sql);
       statement.executeUpdate();
 
       sql = "CREATE TABLE IF NOT EXISTS syncnbt_json_versions (" +

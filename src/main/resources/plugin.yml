@@ -1,10 +1,6 @@
 name: SyncNBT
 main: cc.nsg.bukkit.syncnbt.SyncNBT
 version: 0.3
-author: Stefan Berggren (nsg or nsgb)
-description: Sync the players NDB data between servers.
-depend: [Vault, PowerNBT, ProtocolLib]
-commands:
-  itemsync:
-    description: Control item sync between servers
-    usage: /itemsync [status|mode] [1|2]
+authors: [nsg, Nentify]
+description: Syncs players inventory between servers
+depend: [Vault, ProtocolLib]
