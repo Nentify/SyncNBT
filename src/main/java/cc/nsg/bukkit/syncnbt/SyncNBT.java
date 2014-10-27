@@ -36,6 +36,8 @@ public class SyncNBT extends JavaPlugin {
     
     // Load plugins that I depend on
     ProtocolLibrary.getProtocolManager(); // ProtocolLib
+
+    getServer().getPluginManager().registerEvents(new Listeners(this), this);
   }
 
   /**
