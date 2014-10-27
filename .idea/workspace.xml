@@ -5,6 +5,7 @@
       <change type="DELETED" beforePath="D:\Documents\GitHub\SyncNBT\src\main\java\cc\nsg\bukkit\syncnbt\NBTData.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cc/nsg/bukkit/syncnbt/Database.java" afterPath="$PROJECT_DIR$/src/main/java/cc/nsg/bukkit/syncnbt/Database.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cc/nsg/bukkit/syncnbt/Listeners.java" afterPath="$PROJECT_DIR$/src/main/java/cc/nsg/bukkit/syncnbt/Listeners.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cc/nsg/bukkit/syncnbt/SyncNBT.java" afterPath="$PROJECT_DIR$/src/main/java/cc/nsg/bukkit/syncnbt/SyncNBT.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/config.yml" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" />
@@ -31,11 +32,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SyncNBT.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="SyncNBT.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/cc/nsg/bukkit/syncnbt/SyncNBT.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="884">
+            <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="884">
               <caret line="0" column="16" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.19517796" vertical-offset="0" max-vertical-offset="871">
+              <caret line="10" column="88" selection-start-line="10" selection-start-column="88" selection-end-line="10" selection-end-column="88" />
               <folding />
             </state>
           </provider>
@@ -133,6 +144,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/plugin.yml" />
         <option value="$PROJECT_DIR$/src/main/resources/config.yml" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -484,12 +496,12 @@
       <workItem from="1414447758292" duration="12000" />
       <workItem from="1414447816056" duration="4000" />
       <workItem from="1414447821113" duration="233000" />
-      <workItem from="1414448267366" duration="774000" />
+      <workItem from="1414448267366" duration="901000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1023000" />
+    <option name="totallyTimeSpent" value="1150000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -722,6 +734,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="884">
           <caret line="0" column="16" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19517796" vertical-offset="0" max-vertical-offset="871">
+          <caret line="10" column="88" selection-start-line="10" selection-start-column="88" selection-end-line="10" selection-end-column="88" />
           <folding />
         </state>
       </provider>
