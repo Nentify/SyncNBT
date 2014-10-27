@@ -1,7 +1,7 @@
 SyncNBT
 =======
 
-Sync some NBT data between Minecraft servers
+Syncs players inventory & NBT data between servers
 
 ## Install
 The plugin requires that you have ProtocolLib installed, you can download them from this link:

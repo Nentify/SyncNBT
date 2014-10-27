@@ -2,5 +2,5 @@ name: SyncNBT
 main: cc.nsg.bukkit.syncnbt.SyncNBT
 version: 0.3
 authors: [nsg, Nentify]
-description: Syncs players inventory between servers
+description: Syncs players inventory & NBT data between servers
 depend: [Vault, ProtocolLib]
