@@ -1,6 +1,6 @@
-name: SyncNBT
+name: SyncNBT-UUID
 main: cc.nsg.bukkit.syncnbt.SyncNBT
-version: 0.3
+version: 0.4-alpha1
 authors: [nsg, Nentify]
 description: Syncs players inventory & NBT data between servers
 depend: [Vault, ProtocolLib]

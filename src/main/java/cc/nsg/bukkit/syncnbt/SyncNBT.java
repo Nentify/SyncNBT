@@ -27,7 +27,7 @@ public class SyncNBT extends JavaPlugin {
 		super.onEnable();
 
 		log = this.getLogger();
-		log.info("Loading " + getName() + " version " + getDescription().getVersion());
+		log.info("Loading " + getName() + " version " + getDescription().getVersion() + "[UUID]");
 
 		saveDefaultConfig();
 
