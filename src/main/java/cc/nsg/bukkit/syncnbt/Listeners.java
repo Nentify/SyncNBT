@@ -32,12 +32,12 @@ public class Listeners implements Listener {
 		plugin.db.openConnection();
 
 		Player player = event.getPlayer();
-		plugin.db.lockPlayer(player.getUniqueId().toString());
+		plugin.db.lockPlayer(player.getUniqueId());
 
 		plugin.getLogger().info("Player " + player.getUniqueId().toString() + " logout");
 		new PlayerTicker(plugin, player.getName(), player.getUniqueId()).stopPlayerTicker(true);
 
-		plugin.db.unlockPlayer(player.getUniqueId().toString());
+		plugin.db.unlockPlayer(player.getUniqueId());
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class Listeners implements Listener {
 
 			@Override
 			public void run() {
-				while (plugin.db.isPlayerLocked(player.getUniqueId().toString())) {
+				while (plugin.db.isPlayerLocked(player.getUniqueId())) {
 					player.sendMessage("Items still locked by another server...");
 					try {
 						Thread.sleep(2000);
