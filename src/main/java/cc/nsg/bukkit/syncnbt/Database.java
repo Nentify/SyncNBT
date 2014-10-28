@@ -32,7 +32,7 @@ public class Database {
 		hostname = plugin.getConfig().getString("database.mysql.hostname");
 		port = plugin.getConfig().getInt("database.mysql.port");
 		database = plugin.getConfig().getString("database.mysql.database");
-		user = plugin.getConfig().getString("database.mysql.usernmae");
+		user = plugin.getConfig().getString("database.mysql.username");
 		password = plugin.getConfig().getString("database.mysql.password");
 
 		if (!openConnection()) {
@@ -51,32 +51,14 @@ public class Database {
 
 	}
 
-	public void saveItem(int slot, String player, int amount, short durability, int type, byte data) {
-		openConnection();
-
-		try {
-			String sql = "INSERT INTO syncnbt_items (amount, durability, type, data, player_uuid, slot) VALUES(?,?,?,?,?,?)";
-			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			statement.setInt(1, amount);
-			statement.setShort(2, durability);
-			statement.setInt(3, type);
-			statement.setByte(4, data);
-			statement.setString(5, player);
-			statement.setInt(6, slot);
-			statement.execute();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	}
-
-	public void saveJSONData(String player, String JSONData) {
+	public void saveJSONData(String player_uuid, String JSONData) {
 		openConnection();
 
 		// Save stuff
 		try {
 			String sql = "INSERT INTO syncnbt_json (player_uuid, json_data) VALUES(?,?) ON DUPLICATE KEY UPDATE json_data = ?";
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			statement.setString(1, player);
+			statement.setString(1, player_uuid);
 			statement.setString(2, JSONData);
 			statement.setString(3, JSONData);
 			statement.execute();
@@ -88,7 +70,7 @@ public class Database {
 		try {
 			String sql = "INSERT INTO syncnbt_json_versions (player_uuid, json_data) VALUES(?,?)";
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			statement.setString(1, player);
+			statement.setString(1, player_uuid);
 			statement.setString(2, JSONData);
 			statement.execute();
 		} catch (SQLException e1) {
@@ -97,13 +79,13 @@ public class Database {
 
 	}
 
-	public String getJSONData(String player) {
+	public String getJSONData(String player_uuid) {
 		openConnection();
 
 		String sql = "SELECT * FROM syncnbt_json WHERE player_uuid = ?";
 		try {
 			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setString(1, player);
+			statement.setString(1, player_uuid);
 			ResultSet res = statement.executeQuery();
 			if (res.next()) {
 				return res.getString("json_data");
@@ -115,31 +97,13 @@ public class Database {
 		return null;
 	}
 
-	public int getSetting(String player) {
-		openConnection();
-
-		String sql = "SELECT * FROM syncnbt_settings WHERE player_uuid = ?";
-		try {
-			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setString(1, player);
-			ResultSet res = statement.executeQuery();
-			if (res.next()) {
-				return res.getInt("state");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return 0;
-	}
-
-	private void playerState(String player, int state) {
+	private void playerState(String player_uuid, int state) {
 		openConnection();
 
 		String sql = "INSERT INTO syncnbt_locks (player_uuid, state) values(?, ?) on duplicate key update state = ?";
 		try {
 			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setString(1, player);
+			statement.setString(1, player_uuid);
 			statement.setInt(2, state);
 			statement.setInt(3, state);
 			statement.executeUpdate();
@@ -148,13 +112,13 @@ public class Database {
 		}
 	}
 
-	public boolean isPlayerLocked(String player) {
+	public boolean isPlayerLocked(String player_uuid) {
 		openConnection();
 
 		String sql = "SELECT * FROM syncnbt_locks WHERE player_uuid = ?";
 		try {
 			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setString(1, player);
+			statement.setString(1, player_uuid);
 			ResultSet res = statement.executeQuery();
 			if (res.next()) {
 				return res.getInt("state") == 1;
@@ -166,12 +130,12 @@ public class Database {
 		return false;
 	}
 
-	public void lockPlayer(String player) {
-		playerState(player, 1);
+	public void lockPlayer(String player_uuid) {
+		playerState(player_uuid, 1);
 	}
 
-	public void unlockPlayer(String player) {
-		playerState(player, 0);
+	public void unlockPlayer(String player_uuid) {
+		playerState(player_uuid, 0);
 	}
 
 	public boolean openConnection() {
@@ -214,15 +178,9 @@ public class Database {
 			statement = connection.prepareStatement(sql);
 			statement.executeUpdate();
 
-      /* Settings and locks */
+      /* Locks */
 
 			sql = "CREATE TABLE IF NOT EXISTS syncnbt_locks (" +
-					"player_uuid VARCHAR(255) PRIMARY KEY, state SMALLINT" +
-					");";
-			statement = connection.prepareStatement(sql);
-			statement.executeUpdate();
-
-			sql = "CREATE TABLE IF NOT EXISTS syncnbt_settings (" +
 					"player_uuid VARCHAR(255) PRIMARY KEY, state SMALLINT" +
 					");";
 			statement = connection.prepareStatement(sql);

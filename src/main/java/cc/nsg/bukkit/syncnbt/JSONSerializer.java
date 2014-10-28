@@ -1,11 +1,7 @@
 package cc.nsg.bukkit.syncnbt;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,11 +14,12 @@ import com.comphenix.protocol.utility.StreamSerializer;
 
 public class JSONSerializer {
 
-	public String toJSON(String name) {
-		Player p = Bukkit.getServer().getPlayer(name);
+	public String toJSON(String name, UUID uuid) {
+		Player p = Bukkit.getServer().getPlayer(uuid);
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("name", name);
+		map.put("uuid", uuid);
 		map.put("exp", p.getExp());
 		map.put("foodlevel", p.getFoodLevel());
 		map.put("health", p.getHealth());
@@ -38,7 +35,7 @@ public class JSONSerializer {
 	@SuppressWarnings("unchecked")
 	public void restorePlayer(String json) {
 		Map<String, Object> data = JSON2Map(json);
-		Player p = Bukkit.getServer().getPlayer((String) data.get("name"));
+		Player p = Bukkit.getServer().getPlayer((UUID) data.get("uuid"));
 
 		if (p == null) {
 			Bukkit.getLogger().severe("SyncNBT: We tried to restore data to a player that do not exist, hu?");
