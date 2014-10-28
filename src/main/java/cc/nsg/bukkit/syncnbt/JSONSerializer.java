@@ -19,7 +19,7 @@ public class JSONSerializer {
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("name", name);
-		map.put("uuid", uuid);
+		map.put("uuid", uuid.toString());
 		map.put("exp", p.getExp());
 		map.put("foodlevel", p.getFoodLevel());
 		map.put("health", p.getHealth());
@@ -35,7 +35,7 @@ public class JSONSerializer {
 	@SuppressWarnings("unchecked")
 	public void restorePlayer(String json) {
 		Map<String, Object> data = JSON2Map(json);
-		Player p = Bukkit.getServer().getPlayer((UUID) data.get("uuid"));
+		Player p = Bukkit.getServer().getPlayer(UUID.fromString((String) data.get("uuid")));
 
 		if (p == null) {
 			Bukkit.getLogger().severe("SyncNBT: We tried to restore data to a player that do not exist, hu?");

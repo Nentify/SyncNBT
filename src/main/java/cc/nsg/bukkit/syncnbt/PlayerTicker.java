@@ -27,7 +27,7 @@ public class PlayerTicker {
 	public void startPlayerTicker() {
 		plugin.getLogger().info("A new player called " + name + " found, register player tracking.");
 
-		String json = plugin.db.getJSONData(uuid.toString());
+		String json = plugin.db.getJSONData(uuid);
 		if (json != null) {
 			plugin.getLogger().info("Found data in database for player " + uuid.toString() + ", restoring data.");
 			new JSONSerializer().restorePlayer(json);
@@ -42,7 +42,7 @@ public class PlayerTicker {
 					stopPlayerTicker();
 				} else {
 					String json = new JSONSerializer().toJSON(name, uuid);
-					plugin.db.saveJSONData(uuid.toString(), json);
+					plugin.db.saveJSONData(uuid, json);
 				}
 			}
 		}, 1200L, 1200L);
@@ -53,7 +53,7 @@ public class PlayerTicker {
 
 		if (save) {
 			String json = new JSONSerializer().toJSON(name, uuid);
-			plugin.db.saveJSONData(uuid.toString(), json);
+			plugin.db.saveJSONData(uuid, json);
 		}
 
 		plugin.getLogger().info("Player " + uuid.toString() + " not found, unregister player tracking.");
