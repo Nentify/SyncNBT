@@ -32,12 +32,12 @@ public class Listeners implements Listener {
 		plugin.db.openConnection();
 
 		Player player = event.getPlayer();
-		plugin.db.lockPlayer(player.getUniqueId());
+		plugin.db.lockPlayer(player.getUniqueId(), player.getName());
 
 		plugin.getLogger().info("Player " + player.getUniqueId().toString() + " logout");
 		new PlayerTicker(plugin, player.getName(), player.getUniqueId()).stopPlayerTicker(true);
 
-		plugin.db.unlockPlayer(player.getUniqueId());
+		plugin.db.unlockPlayer(player.getUniqueId(), player.getName());
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class Listeners implements Listener {
 		final Player player = event.getPlayer();
 
     /*
-     * Spawn a async thread and wait for the lock to clear
+     * Spawn an async thread and wait for the lock to clear
      */
 		new BukkitRunnable() {
 

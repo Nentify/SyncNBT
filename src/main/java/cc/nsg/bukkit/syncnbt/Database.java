@@ -29,7 +29,6 @@ public class Database {
 
 		log = plugin.getLogger();
 
-		// TODO: Check these values for sane data
 		hostname = plugin.getConfig().getString("database.mysql.hostname");
 		port = plugin.getConfig().getInt("database.mysql.port");
 		database = plugin.getConfig().getString("database.mysql.database");
@@ -51,30 +50,32 @@ public class Database {
 		return connection;
 	}
 
-	public void saveJSONData(UUID player_uuid, String JSONData) {
+	public void saveJSONData(UUID player_uuid, String username, String JSONData) {
 		openConnection();
 
 		// Save stuff
 		try {
-			String sql = "INSERT INTO syncnbt_json (player_uuid, json_data) VALUES(?,?) ON DUPLICATE KEY UPDATE json_data = ?";
+			String sql = "INSERT INTO syncnbt_json (player_uuid, username, json_data) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE json_data = ?";
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, player_uuid.toString());
-			statement.setString(2, JSONData);
+			statement.setString(2, username);
 			statement.setString(3, JSONData);
+			statement.setString(4, JSONData);
 			statement.execute();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
 		// Save a copy to _versions, this is used for restores
 		try {
-			String sql = "INSERT INTO syncnbt_json_versions (player_uuid, json_data) VALUES(?,?)";
+			String sql = "INSERT INTO syncnbt_json_versions (player_uuid, username, json_data) VALUES(?, ?, ?)";
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, player_uuid.toString());
-			statement.setString(2, JSONData);
+			statement.setString(2, username);
+			statement.setString(3, JSONData);
 			statement.execute();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -97,15 +98,16 @@ public class Database {
 		return null;
 	}
 
-	private void playerState(UUID player_uuid, int state) {
+	private void playerState(UUID player_uuid, String username, int state) {
 		openConnection();
 
-		String sql = "INSERT INTO syncnbt_locks (player_uuid, state) values(?, ?) on duplicate key update state = ?";
+		String sql = "INSERT INTO syncnbt_locks (player_uuid, username, state) values(?, ?, ?) on duplicate key update state = ?";
 		try {
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, player_uuid.toString());
-			statement.setInt(2, state);
+			statement.setString(2, username);
 			statement.setInt(3, state);
+			statement.setInt(4, state);
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -130,12 +132,12 @@ public class Database {
 		return false;
 	}
 
-	public void lockPlayer(UUID player_uuid) {
-		playerState(player_uuid, 1);
+	public void lockPlayer(UUID player_uuid, String username) {
+		playerState(player_uuid, username, 1);
 	}
 
-	public void unlockPlayer(UUID player_uuid) {
-		playerState(player_uuid, 0);
+	public void unlockPlayer(UUID player_uuid, String username) {
+		playerState(player_uuid, username, 0);
 	}
 
 	public boolean openConnection() {
@@ -166,13 +168,13 @@ public class Database {
       /* used by ProtocolLib mode 2 */
 
 			String sql = "CREATE TABLE IF NOT EXISTS syncnbt_json (" +
-					"player_uuid VARCHAR(255) PRIMARY KEY, json_data BLOB" +
+					"player_uuid VARCHAR(255) PRIMARY KEY, username VARCHAR(255), json_data BLOB" +
 					");";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.executeUpdate();
 
 			sql = "CREATE TABLE IF NOT EXISTS syncnbt_json_versions (" +
-					"id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player_uuid VARCHAR(255), json_data BLOB, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+					"id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player_uuid VARCHAR(255), username VARCHAR(255), json_data BLOB, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
 					");";
 			statement = connection.prepareStatement(sql);
 			statement.executeUpdate();
@@ -180,7 +182,7 @@ public class Database {
       /* Locks */
 
 			sql = "CREATE TABLE IF NOT EXISTS syncnbt_locks (" +
-					"player_uuid VARCHAR(255) PRIMARY KEY, state SMALLINT" +
+					"player_uuid VARCHAR(255) PRIMARY KEY, username VARCHAR(255), state SMALLINT" +
 					");";
 			statement = connection.prepareStatement(sql);
 			statement.executeUpdate();

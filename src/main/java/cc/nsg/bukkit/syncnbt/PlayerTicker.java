@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
+import java.util.logging.Logger;
 
 /**
  * Handlers players for ProtocolLib (mode 2)
@@ -11,23 +12,24 @@ import java.util.UUID;
 
 public class PlayerTicker {
 
-	private String name;
+	private String username;
 	private UUID uuid;
 	private int ticker_thread_id = -1;
 	private SyncNBT plugin;
 
-	public PlayerTicker(SyncNBT plugin, String name, UUID uuid) {
+	public PlayerTicker(SyncNBT plugin, String username, UUID uuid) {
 		this.plugin = plugin;
 
-		this.name = name;
+		this.username = username;
 		this.uuid = uuid;
 	}
 
 	// We found a new player to track
 	public void startPlayerTicker() {
-		plugin.getLogger().info("A new player called " + name + " found, register player tracking.");
+		plugin.getLogger().info("A new player called " + username + " found, register player tracking.");
 
 		String json = plugin.db.getJSONData(uuid);
+
 		if (json != null) {
 			plugin.getLogger().info("Found data in database for player " + uuid.toString() + ", restoring data.");
 			new JSONSerializer().restorePlayer(json);
@@ -41,8 +43,8 @@ public class PlayerTicker {
 				if (p == null) {
 					stopPlayerTicker();
 				} else {
-					String json = new JSONSerializer().toJSON(name, uuid);
-					plugin.db.saveJSONData(uuid, json);
+					String json = new JSONSerializer().toJSON(username, uuid);
+					plugin.db.saveJSONData(uuid, username, json);
 				}
 			}
 		}, 1200L, 1200L);
@@ -52,8 +54,8 @@ public class PlayerTicker {
 	public void stopPlayerTicker(Boolean save) {
 
 		if (save) {
-			String json = new JSONSerializer().toJSON(name, uuid);
-			plugin.db.saveJSONData(uuid, json);
+			String json = new JSONSerializer().toJSON(username, uuid);
+			plugin.db.saveJSONData(uuid, username, json);
 		}
 
 		plugin.getLogger().info("Player " + uuid.toString() + " not found, unregister player tracking.");
@@ -65,7 +67,7 @@ public class PlayerTicker {
 	}
 
 	public String getName() {
-		return name;
+		return username;
 	}
 
 	private UUID getUUID() {
