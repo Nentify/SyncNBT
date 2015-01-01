@@ -97,7 +97,8 @@ public class JSONSerializer {
 			e.printStackTrace();
 		}
 
-		p.sendMessage("Your items are restored from " + data.get("saved_date"));
+		// TODO: Debug config option maybe
+		// p.sendMessage("Your items are restored from " + data.get("saved_date"));
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
